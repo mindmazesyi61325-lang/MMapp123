@@ -46,7 +46,6 @@ export default function Sidebar({ user, onLogout }){
               margin: '4px 0',
               borderRadius: '10px',
               textDecoration: 'none',
-              color: 'var(--text-muted)',
               transition: 'all 0.3s',
               background: location.pathname === item.path ? 'rgba(167, 139, 250, 0.15)' : 'transparent',
               borderLeft: location.pathname === item.path ? '3px solid var(--primary)' : '3px solid transparent',

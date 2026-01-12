@@ -2,6 +2,37 @@
 
 A safe, anonymous emotional wellness platform for teenagers. Features mood tracking, journaling, stress-buster games, and peer support community.
 
+## Quick Start
+
+### Option 1: Python Flask Server (Recommended)
+
+```powershell
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Build React frontend
+npm run build
+
+# Start Flask server
+python app.py
+```
+
+Open **http://localhost:5000** in your browser.
+
+### Option 2: Development Mode (Node.js + Vite)
+
+```powershell
+# Install Node dependencies
+npm install
+
+# Start Vite dev server
+npm run dev
+```
+
+Open **http://localhost:5173** in your browser.
+
+---
+
 ## Features
 
 - **🏠 Dashboard** — Overview of your emotional journey with mood tracking
@@ -14,27 +45,25 @@ A safe, anonymous emotional wellness platform for teenagers. Features mood track
 ## Tech Stack
 
 - **Frontend:** React 18 + React Router v7
+- **Backend:** Flask 3.0 (Python)
 - **Build:** Vite 5
 - **Styling:** CSS (Purple/Dark theme, fully responsive)
-- **Storage:** localStorage (prototype)
-- **Data:** Client-side persistence
+- **Storage:** JSON files (user data), localStorage (frontend cache)
+- **API:** RESTful endpoints for auth, moods, journal, chat
 
-## Quick Start
+## API Endpoints
 
-Install dependencies and run:
-
-```powershell
-npm install
-npm run dev
-```
-
-Open **http://localhost:5174** in your browser.
-
-### Build for Production
-
-```powershell
-npm run build
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/health` | Server health check |
+| POST | `/api/auth/signup` | Create new user |
+| POST | `/api/auth/signin` | User login |
+| POST | `/api/mood` | Record mood entry |
+| GET | `/api/mood/<user_id>` | Get user moods |
+| POST | `/api/journal` | Save journal entry |
+| GET | `/api/journal/<user_id>` | Get journal entries |
+| GET | `/api/chat/<room>` | Get room messages |
+| POST | `/api/chat/<room>` | Post message to room |
 
 ## Project Structure
 
@@ -58,33 +87,8 @@ src/
 ├── App.jsx               # Router setup
 ├── main.jsx              # React bootstrap
 └── styles.css            # Global styles
-```
 
-## Data Stored (localStorage)
-
-- `mm-user` — Current user session
-- `mm-journal` — Journal entries with timestamps
-- `mm-moods` — Mood tracking data
-- `mm-chat-messages` — Community chat messages
-
-## Design Notes
-
-- Purple/dark theme with gradient accents
-- Minimalist, attractive UI
-- Soft animations and micro-interactions
-- Fully responsive grid layouts
-- Crisis support prominently featured
-
-## Notes for Next Steps
-
-- Connect backend API (Node.js/Express or Firebase)
-- Add real-time chat with moderation
-- Implement data encryption for journals
-- Add push notifications
-- Build mobile app (React Native)
-- Add AI-assisted mood insights (non-diagnostic)
-
----
-
-**Not a therapy platform.** Emergency support: Call 988 (US) · For ages 13+
+dist/                      # Production build (React)
+app.py                     # Flask server
+data/                      # User data storage (JSON files)
 
