@@ -215,6 +215,27 @@ def serve_static(path):
     
     # Fallback to index.html for SPA routing
     return send_from_directory('dist', 'index.html')
+# -----------------------------
+# Serve React frontend
+# -----------------------------
+
+@app.route("/", methods=["GET"])
+def index():
+    return send_from_directory("dist", "index.html")
+
+
+@app.route("/<path:path>", methods=["GET"])
+def serve_static(path):
+    # Block API paths
+    if path.startswith("api"):
+        return jsonify({"error": "Not found"}), 404
+
+    file_path = Path("dist") / path
+    if file_path.exists():
+        return send_from_directory("dist", path)
+
+    # SPA fallback
+    return send_from_directory("dist", "index.html")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
