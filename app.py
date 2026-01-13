@@ -216,9 +216,10 @@ def serve_static(path):
     # Fallback to index.html for SPA routing
     return send_from_directory('dist', 'index.html')
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
     print("🚀 MindMaze Flask Server")
-    print("📍 http://localhost:5000")
-    print("🔌 API: http://localhost:5000/api/health")
-    app.run(host="0.0.0.0")
+    print(f"🌐 Running on port {port}")
+    app.run(host="0.0.0.0", port=port)
+
 
