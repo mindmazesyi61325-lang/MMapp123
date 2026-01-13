@@ -79,14 +79,6 @@ def logout():
 def require_login():
     if "user" not in session:
         return jsonify({"error": "Unauthorized"}), 401
-fetch("/api/login", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  credentials: "include",
-  body: JSON.stringify({ username, password })
-});
-
-
 
 # API Routes
 @app.route('/api/health', methods=['GET'])
