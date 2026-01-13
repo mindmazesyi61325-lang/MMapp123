@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory, session
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
 import json
 import os
@@ -6,6 +7,7 @@ from datetime import datetime
 from pathlib import Path
 
 app = Flask(__name__, static_folder='dist', static_url_path='')
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key")
 CORS(app)
 
 # Data directory for storing user data
@@ -26,6 +28,63 @@ def save_user_data(user_id, data):
     user_file = DATA_DIR / f'user_{user_id}.json'
     with open(user_file, 'w') as f:
         json.dump(data, f, indent=2)
+        @app.route("/api/register", methods=["POST"])
+def register():
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
+
+    if not username or not password:
+        return jsonify({"error": "Missing username or password"}), 400
+
+    user_file = DATA_DIR / f"user_{username}.json"
+    if user_file.exists():
+        return jsonify({"error": "User already exists"}), 400
+
+    user_data = {
+        "username": username,
+        "password": generate_password_hash(password),
+        "created_at": datetime.now().isoformat(),
+        "journal": []
+    }
+
+    with open(user_file, "w") as f:
+        json.dump(user_data, f, indent=2)
+
+    return jsonify({"message": "User registered"}), 201
+    @app.route("/api/login", methods=["POST"])
+def login():
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
+
+    user_file = DATA_DIR / f"user_{username}.json"
+    if not user_file.exists():
+        return jsonify({"error": "Invalid credentials"}), 401
+
+    with open(user_file, "r") as f:
+        user = json.load(f)
+
+    if not check_password_hash(user["password"], password):
+        return jsonify({"error": "Invalid credentials"}), 401
+
+    session["user"] = username
+    return jsonify({"message": "Logged in", "user": username}), 200
+@app.route("/api/logout", methods=["POST"])
+def logout():
+    session.pop("user", None)
+    return jsonify({"message": "Logged out"}), 200
+def require_login():
+    if "user" not in session:
+        return jsonify({"error": "Unauthorized"}), 401
+fetch("/api/login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  credentials: "include",
+  body: JSON.stringify({ username, password })
+});
+
+
 
 # API Routes
 @app.route('/api/health', methods=['GET'])
