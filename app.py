@@ -28,6 +28,7 @@ def save_user_data(user_id, data):
     user_file = DATA_DIR / f'user_{user_id}.json'
     with open(user_file, 'w') as f:
         json.dump(data, f, indent=2)
+        
 @app.route("/api/register", methods=["POST"])
 def register():
     data = request.json
