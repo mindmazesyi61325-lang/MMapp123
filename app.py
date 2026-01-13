@@ -203,27 +203,6 @@ def index():
     """Serve index.html for all non-API routes"""
     return send_from_directory('dist', 'index.html')
 
-@app.route('/<path:path>', methods=['GET'])
-def serve_static(path):
-    """Serve static assets"""
-    if path.startswith('api/'):
-        return jsonify({'error': 'Not found'}), 404
-    
-    file_path = Path('dist') / path
-    if file_path.exists() and file_path.is_file():
-        return send_from_directory('dist', path)
-    
-    # Fallback to index.html for SPA routing
-    return send_from_directory('dist', 'index.html')
-# -----------------------------
-# Serve React frontend
-# -----------------------------
-
-@app.route("/", methods=["GET"])
-def index():
-    return send_from_directory("dist", "index.html")
-
-
 @app.route("/<path:path>", methods=["GET"])
 def serve_static(path):
     # Block API paths
