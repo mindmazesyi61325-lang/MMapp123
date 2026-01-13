@@ -53,7 +53,7 @@ def register():
         json.dump(user_data, f, indent=2)
 
     return jsonify({"message": "User registered"}), 201
-    @app.route("/api/login", methods=["POST"])
+@app.route("/api/login", methods=["POST"])
 def login():
     data = request.json
     username = data.get("username")
@@ -71,6 +71,7 @@ def login():
 
     session["user"] = username
     return jsonify({"message": "Logged in", "user": username}), 200
+
 @app.route("/api/logout", methods=["POST"])
 def logout():
     session.pop("user", None)
