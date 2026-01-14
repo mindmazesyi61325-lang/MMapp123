@@ -35,7 +35,11 @@ export default function SignUp({ onSignUp }){
       return
     }
 
-    onSignUp(username)
+    onSignUp({
+  username,
+  age
+})
+
     navigate('/dashboard')
   }
 
